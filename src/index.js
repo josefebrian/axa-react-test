@@ -11,6 +11,7 @@ import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialState = {};
 const store = configureAppStore(initialState, history);

@@ -22,6 +22,7 @@ const Header = () => {
   const getUserActive = async () => {
     const activeUser = await get("activeUser");
     if (activeUser?.id) setActiveUser(activeUser);
+    else navigate("/")
   }
 
   // delete active user from idb (local storage) if the user logged out
@@ -56,27 +57,24 @@ const Header = () => {
         keyboard={false}
         dialogClassName="modal-25w"
       >
-        <Modal.Header style={{ justifyContent: 'center' }}>
-          <Modal.Title style={{ fontSize: '16px', fontWeight: 'bold' }}>
+        <Modal.Header className="justify-center">
+          <Modal.Title className="text-base font-bold">
             Logout
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="notifications" style={{ padding: "24px 40px", backgroundColor: '#F5F6F6' }}>
-          <p style={{ fontSize: '16px', textAlign: 'center' }}>
+        <Modal.Body className="px-[40px] py-[24px] bg-gray-2">
+          <p className="text-base text-center">
             Are you sure you want to logout ?
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '1rem' }}>
+          <div className="flex justify-center pt-3">
             <button
-              style={{ flex: '0.3 0.3 auto', margin: '0 4px', padding: '10px 0', border: '1px solid #cccccc', borderRadius: '5px' }}
+              className="border-[1px] border-gray-5 rounded-md mx-[4px] flex-[0.3_0.3_auto]"
               onClick={() => setShowLogout(false)}
             >
               Cancel
             </button>
             <button
-              style={{
-                flex: '0.3 0.3 auto', margin: '0 4px', padding: '13px 0', backgroundColor: '#FF0C2B',
-                color: 'white', border: '1px solid #FF0C2B', borderRadius: '5px'
-              }}
+              className="border-[1px] border-red-2 rounded-md mx-[4px] flex-[0.3_0.3_auto] py-[13px] bg-red-2 text-white"
               onClick={handleLogout}
             >
               Confirm

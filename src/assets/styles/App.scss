@@ -1,0 +1,29 @@
+/*
+    this sheet is for primary App styles
+*/
+body {
+  margin: 0;
+  font-family: 'Slate For OnePlus';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.modal-25w {
+  width: 25%;
+}
+
+.modal-50w {
+  width: 50%;
+}
+
+.modal-75w {
+  width: 75%;
+}
+
+.modal-100w {
+  width: 100%;
+}
+
+.border-b-modal {
+  border-bottom: 1px solid #E1E2EA;
+}

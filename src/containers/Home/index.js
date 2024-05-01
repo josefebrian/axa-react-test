@@ -44,7 +44,8 @@ function App() {
   return (
     <>
       <div className="text-center px-10">
-        <div className="mt-10 grid grid-cols-5 gap-4">
+        <p className="text-2xl pt-4 font-bold">Users</p>
+        <div className="pt-2 grid grid-cols-5 gap-4">
           {userList.map((val, index) => (
             <div key={index} className="border-[1px] border-red-1 cursor-pointer rounded-lg"
               onClick={() => {
