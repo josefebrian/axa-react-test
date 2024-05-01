@@ -1,0 +1,11 @@
+/*
+    this sheet is only for importing stylesheet pages or components
+*/
+
+@import 'variables'; // global variables
+
+// import thrid parties css below here
+@import 'vendors/bootstrap';
+
+// import components stylesheet below here
+@import 'components/Header';

@@ -9,6 +9,7 @@ import { Loader } from 'components';
 import App from 'containers/App';
 import reportWebVitals from './reportWebVitals';
 
+import './index.scss';
 import './index.css';
 
 const initialState = {};
