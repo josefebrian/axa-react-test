@@ -8,6 +8,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal';
 
 import {
+  addComment,
+  addPost,
   commentsSelector,
   deleteComment,
   deletePost,
@@ -23,6 +25,7 @@ import EditLogo from 'assets/images/edit-icon.png';
 import DeleteLogo from 'assets/images/delete-icon.png';
 import BackLogo from 'assets/images/arrow-left-icon.png';
 import { Loader } from 'components';
+import { Button } from 'react-bootstrap';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +42,7 @@ function App() {
   const [activeComments, setActiveComments] = useState(null)
   const [showDelete, setShowDelete] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [showAdd, setShowAdd] = useState(false)
 
   useEffect(() => {
     dispatch(fetchPostList());
@@ -95,6 +99,30 @@ function App() {
           position: toast.POSITION.BOTTOM_RIGHT
         });
       }
+      else if (action === "add") {
+        const highestId = commentList.reduce((max, obj) => obj.id > max ? obj.id : max, 0);
+
+        const obj = {
+          id: highestId + 1,
+          name: activeComments?.name,
+          email: activeComments?.email,
+          body: activeComments?.body,
+          postId: activePost?.id
+        }
+
+        dispatch(addComment(obj))
+
+        const comment = commentList.concat(obj);
+
+        setCommentList(comment);
+        setShowAdd(false);
+        setShowPost(true);
+        setActiveComments(null);
+
+        toast.success('Successfully Add Comment', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
     }
     else if (type === "post") {
       if (action === "delete") {
@@ -125,6 +153,28 @@ function App() {
           position: toast.POSITION.BOTTOM_RIGHT
         });
       }
+      else if (action === "add") {
+        const highestId = postsList.reduce((max, obj) => obj.id > max ? obj.id : max, 0);
+
+        const obj = {
+          id: highestId + 1,
+          userId: activeUser?.id,
+          title: activePost?.title,
+          body: activePost?.body
+        }
+
+        dispatch(addPost(obj))
+
+        const posts = postsList.concat(obj);
+
+        setPostsList(posts);
+        setShowAdd(false);
+        setActivePost(null);
+
+        toast.success('Successfully Add Post', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      }
     }
   }
 
@@ -139,6 +189,9 @@ function App() {
             <p className="text-lg font-bold">Back</p>
           </div>
           <p className="text-2xl font-bold">Posts</p>
+          <div className="flex justify-end">
+            <Button onClick={() => setShowAdd("post")}>Add Post</Button>
+          </div>
         </div>
         <div className="pt-2 grid grid-cols-3 gap-4">
           {postsList?.map((val, index) => (
@@ -225,7 +278,17 @@ function App() {
                 </div>
               </div>
 
-              <p className="font-bold pb-1">Comments</p>
+              <div className="grid grid-cols-2 pb-2 items-center">
+                <p className="font-bold">Comments</p>
+                <div className="flex justify-end">
+                  <Button onClick={() => {
+                    setShowAdd("comment")
+                    setShowPost(false);
+                  }}>
+                    Add Comment
+                  </Button>
+                </div>
+              </div>
               {commentList?.length > 0 ? (
                 <div className="bg-gray-4 px-2 py-2">
                   {(commentList || []).map(val => (
@@ -407,6 +470,122 @@ function App() {
               onClick={() => {
                 if (showEdit === "comment") handleAction("edit", showEdit, activeComments?.id)
                 else if (showEdit === "post") handleAction("edit", showEdit, activePost?.id)
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Modal Add */}
+      <Modal
+        show={showAdd}
+        onHide={() => {
+          if (showAdd === "post") {
+            setShowAdd(false);
+            setActivePost(null);
+            setActiveComments(null);
+          }
+          else if (showAdd === "comment") {
+            setShowAdd(false);
+            setShowPost(true);
+            setActiveComments(null);
+          }
+        }}
+        keyboard={false}
+        dialogClassName="modal-100w"
+      >
+        <Modal.Header className="justify-center">
+          <Modal.Title className="text-base font-bold">
+            Add
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="px-[40px] py-[24px] bg-gray-2">
+          {showAdd === "post" && (
+            <>
+              <div>Title</div>
+              <div className="mt-1 mb-2">
+                <input className="w-full border-[1px] border-solid border-gray-1 text-gray-3 rounded-lg p-2.5" value={activePost?.title}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setActivePost({ ...activePost, title: val })
+                  }}
+                />
+              </div>
+
+              <div>Body</div>
+              <div className="mt-1 mb-4">
+                <textarea rows={6} className="w-full border-[1px] border-solid border-gray-1 text-gray-3 rounded-lg p-2.5" value={activePost?.body}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setActivePost({ ...activePost, body: val })
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          {showAdd === "comment" && (
+            <>
+              <div>Name</div>
+              <div className="mt-1 mb-2">
+                <input className="w-full border-[1px] border-solid border-gray-1 text-gray-3 rounded-lg p-2.5" value={activeComments?.name}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setActiveComments({ ...activeComments, name: val })
+                  }}
+                />
+              </div>
+
+              <div>Email</div>
+              <div className="mt-1 mb-2">
+                <input className="w-full border-[1px] border-solid border-gray-1 text-gray-3 rounded-lg p-2.5" value={activeComments?.email}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setActiveComments({ ...activeComments, email: val })
+                  }}
+                />
+              </div>
+
+              <div>Body</div>
+              <div className="mt-1 mb-4">
+                <textarea rows={6} className="w-full border-[1px] border-solid border-gray-1 text-gray-3 rounded-lg p-2.5" value={activeComments?.body}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setActiveComments({ ...activeComments, body: val })
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          <p className="text-base text-center">
+            {`Save this ${showAdd}`} ?
+          </p>
+          <div className="flex justify-center pt-3">
+            <button
+              className="border-[1px] border-gray-5 rounded-md mx-[4px] flex-[0.3_0.3_auto]"
+              onClick={() => {
+                if (showAdd === "post") {
+                  setShowAdd(false);
+                  setActivePost(null);
+                  setActiveComments(null);
+                }
+                else if (showAdd === "comment") {
+                  setShowAdd(false);
+                  setShowPost(true);
+                  setActiveComments(null);
+                }
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="border-[1px] border-red-2 rounded-md mx-[4px] flex-[0.3_0.3_auto] py-[13px] bg-red-2 text-white"
+              onClick={() => {
+                if (showAdd === "comment") handleAction("add", showAdd, activeComments?.id)
+                else if (showAdd === "post") handleAction("add", showAdd, activePost?.id)
               }}
             >
               Save

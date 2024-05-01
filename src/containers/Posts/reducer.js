@@ -103,6 +103,47 @@ export const editComment = createAsyncThunk('posts/comment/edit', async (params)
     return response;
 });
 
+export const addPost = createAsyncThunk('posts/add', async (params) => {
+    const { title, body, userId } = params
+
+    let response;
+
+    const data = {
+        title,
+        body,
+        userId,
+    };
+
+    await axios({
+        method: 'post',
+        url: `${backendUrl}/posts`,
+        data
+    }).then((r) => response = r.data);
+
+    return response;
+});
+
+export const addComment = createAsyncThunk('posts/comment/add', async (params) => {
+    const { name, email, body, postId } = params
+
+    let response;
+
+    const data = {
+        name,
+        email,
+        body,
+        postId,
+    };
+
+    await axios({
+        method: 'post',
+        url: `${backendUrl}/comments`,
+        data
+    }).then((r) => response = r.data);
+
+    return response;
+});
+
 export const POSTS_REDUCER = 'POSTS_REDUCER';
 const PostsSlice = createSlice({
     name: POSTS_REDUCER,
