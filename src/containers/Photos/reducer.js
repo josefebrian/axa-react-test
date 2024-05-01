@@ -3,15 +3,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { backendUrl } from 'utils/constants';
 
 export const initialState = {
-    photosList: []
+    photosList: {
+        records: [],
+        loading: false
+    }
 };
 
-export const fetchPhotosList = createAsyncThunk('photos/list', async (token) => {
+export const fetchPhotosList = createAsyncThunk('photos/list', async (params) => {
     let response;
+    const { id } = params
 
     await axios({
         method: 'get',
-        url: `${backendUrl}/photos`
+        url: `${backendUrl}/albums/${id}/photos`
     }).then((r) => response = r.data);
 
     return response;
@@ -23,8 +27,13 @@ const PhotosSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(fetchPhotosList.pending, (state, action) => {
+            state.photosList.loading = true;
+            state.photosList.records = action.payload
+        });
         builder.addCase(fetchPhotosList.fulfilled, (state, action) => {
-            state.photosList = action.payload
+            state.photosList.loading = false;
+            state.photosList.records = action.payload
         });
     }
 });

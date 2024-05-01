@@ -30,7 +30,7 @@ function App() {
   const getUserActive = async () => {
     const activeUser = await get("activeUser");
 
-    if (activeUser?.id) navigate("posts");
+    if (activeUser?.id) navigate("menu");
   }
 
   // save active user into idb (local storage)
@@ -38,7 +38,7 @@ function App() {
     await set("activeUser", activeUser);
 
     setActiveUser(null);
-    navigate("posts")
+    navigate("menu")
   }
 
   return (

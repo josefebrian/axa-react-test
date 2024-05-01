@@ -8,6 +8,7 @@ const Main = lazy(() => import('containers/Home'))
 const Posts = lazy(() => import('containers/Posts'))
 const Albums = lazy(() => import('containers/Albums'))
 const Photos = lazy(() => import('containers/Photos'))
+const Menu = lazy(() => import('containers/Menu'))
 
 const MainRoutes = () => {
   return (
@@ -16,7 +17,8 @@ const MainRoutes = () => {
       <Route element={<Layout />}>
         <Route path="/posts" element={<Posts />} />
         <Route path="/albums" element={<Albums />} />
-        <Route path="/photos" element={<Photos />} />
+        <Route path="/albums/:id/photos" element={<Photos />} />
+        <Route path="/menu" element={<Menu />} />
       </Route>
     </Routes>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { get } from 'idb-keyval';
 import { toast, ToastContainer } from 'react-toastify';
@@ -20,10 +21,12 @@ import {
 import CloseLogo from 'assets/images/close-icon.png';
 import EditLogo from 'assets/images/edit-icon.png';
 import DeleteLogo from 'assets/images/delete-icon.png';
+import BackLogo from 'assets/images/arrow-left-icon.png';
 import { Loader } from 'components';
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const postsRecords = useSelector(postsSelector);
   const { records, loading } = useSelector(commentsSelector);
@@ -128,7 +131,15 @@ function App() {
   return (
     <>
       <div className="text-center">
-        <p className="text-2xl pt-4 font-bold">Posts</p>
+        <div className="grid grid-cols-3 items-center pt-4">
+          <div className="flex items-center gap-2">
+            <div>
+              <img className="cursor-pointer" width={24} src={BackLogo} alt="BackLogo" onClick={() => navigate("/menu")} />
+            </div>
+            <p className="text-lg font-bold">Back</p>
+          </div>
+          <p className="text-2xl font-bold">Posts</p>
+        </div>
         <div className="pt-2 grid grid-cols-3 gap-4">
           {postsList?.map((val, index) => (
             <>
