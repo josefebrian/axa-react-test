@@ -25,4 +25,5 @@
 - Tailwind CSS
 - Bootstrap
 
-### For the demo [Click Here](https://axa-react-test.vercel.app)
+### For now the page is not responsive, so please open the demo from laptop
+### Demo link [Click Here](https://axa-react-test.vercel.app)
